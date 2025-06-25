@@ -1,0 +1,4 @@
+Result is 14
+Result is 9
+Result is 5
+0による除算です

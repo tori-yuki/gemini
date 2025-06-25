@@ -1,0 +1,304 @@
+Grammar
+
+    0 $accept: statement_list $end
+
+    1 statement_list: ε
+    2               | statement statement_list
+
+    3 statement: exp SEMICOLON
+    4          | error SEMICOLON
+
+    5 exp: exp PLUS term
+    6    | exp HYPHEN term
+    7    | term
+
+    8 term: term SLASH factor
+    9     | term ASTERISK factor
+   10     | factor
+
+   11 factor: HYPHEN factor
+   12       | OPENPAREN exp CLOSEPAREN
+   13       | NUM
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256) 4
+    NUM (258) 13
+    PLUS (259) 5
+    HYPHEN (260) 6 11
+    ASTERISK (261) 9
+    SLASH (262) 8
+    SEMICOLON (263) 3 4
+    OPENPAREN (264) 12
+    CLOSEPAREN (265) 12
+
+
+Nonterminals, with rules where they appear
+
+    $accept (11)
+        on left: 0
+    statement_list (12)
+        on left: 1 2
+        on right: 0 2
+    statement (13)
+        on left: 3 4
+        on right: 2
+    exp (14)
+        on left: 5 6 7
+        on right: 3 5 6 12
+    term (15)
+        on left: 8 9 10
+        on right: 5 6 7 8 9
+    factor (16)
+        on left: 11 12 13
+        on right: 8 9 10 11
+
+
+State 0
+
+    0 $accept: • statement_list $end
+
+    error      shift, and go to state 1
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    $end  reduce using rule 1 (statement_list)
+
+    statement_list  go to state 5
+    statement       go to state 6
+    exp             go to state 7
+    term            go to state 8
+    factor          go to state 9
+
+
+State 1
+
+    4 statement: error • SEMICOLON
+
+    SEMICOLON  shift, and go to state 10
+
+
+State 2
+
+   13 factor: NUM •
+
+    $default  reduce using rule 13 (factor)
+
+
+State 3
+
+   11 factor: HYPHEN • factor
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    factor  go to state 11
+
+
+State 4
+
+   12 factor: OPENPAREN • exp CLOSEPAREN
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    exp     go to state 12
+    term    go to state 8
+    factor  go to state 9
+
+
+State 5
+
+    0 $accept: statement_list • $end
+
+    $end  shift, and go to state 13
+
+
+State 6
+
+    2 statement_list: statement • statement_list
+
+    error      shift, and go to state 1
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    $end  reduce using rule 1 (statement_list)
+
+    statement_list  go to state 14
+    statement       go to state 6
+    exp             go to state 7
+    term            go to state 8
+    factor          go to state 9
+
+
+State 7
+
+    3 statement: exp • SEMICOLON
+    5 exp: exp • PLUS term
+    6    | exp • HYPHEN term
+
+    PLUS       shift, and go to state 15
+    HYPHEN     shift, and go to state 16
+    SEMICOLON  shift, and go to state 17
+
+
+State 8
+
+    7 exp: term •
+    8 term: term • SLASH factor
+    9     | term • ASTERISK factor
+
+    ASTERISK  shift, and go to state 18
+    SLASH     shift, and go to state 19
+
+    $default  reduce using rule 7 (exp)
+
+
+State 9
+
+   10 term: factor •
+
+    $default  reduce using rule 10 (term)
+
+
+State 10
+
+    4 statement: error SEMICOLON •
+
+    $default  reduce using rule 4 (statement)
+
+
+State 11
+
+   11 factor: HYPHEN factor •
+
+    $default  reduce using rule 11 (factor)
+
+
+State 12
+
+    5 exp: exp • PLUS term
+    6    | exp • HYPHEN term
+   12 factor: OPENPAREN exp • CLOSEPAREN
+
+    PLUS        shift, and go to state 15
+    HYPHEN      shift, and go to state 16
+    CLOSEPAREN  shift, and go to state 20
+
+
+State 13
+
+    0 $accept: statement_list $end •
+
+    $default  accept
+
+
+State 14
+
+    2 statement_list: statement statement_list •
+
+    $default  reduce using rule 2 (statement_list)
+
+
+State 15
+
+    5 exp: exp PLUS • term
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    term    go to state 21
+    factor  go to state 9
+
+
+State 16
+
+    6 exp: exp HYPHEN • term
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    term    go to state 22
+    factor  go to state 9
+
+
+State 17
+
+    3 statement: exp SEMICOLON •
+
+    $default  reduce using rule 3 (statement)
+
+
+State 18
+
+    9 term: term ASTERISK • factor
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    factor  go to state 23
+
+
+State 19
+
+    8 term: term SLASH • factor
+
+    NUM        shift, and go to state 2
+    HYPHEN     shift, and go to state 3
+    OPENPAREN  shift, and go to state 4
+
+    factor  go to state 24
+
+
+State 20
+
+   12 factor: OPENPAREN exp CLOSEPAREN •
+
+    $default  reduce using rule 12 (factor)
+
+
+State 21
+
+    5 exp: exp PLUS term •
+    8 term: term • SLASH factor
+    9     | term • ASTERISK factor
+
+    ASTERISK  shift, and go to state 18
+    SLASH     shift, and go to state 19
+
+    $default  reduce using rule 5 (exp)
+
+
+State 22
+
+    6 exp: exp HYPHEN term •
+    8 term: term • SLASH factor
+    9     | term • ASTERISK factor
+
+    ASTERISK  shift, and go to state 18
+    SLASH     shift, and go to state 19
+
+    $default  reduce using rule 6 (exp)
+
+
+State 23
+
+    9 term: term ASTERISK factor •
+
+    $default  reduce using rule 9 (term)
+
+
+State 24
+
+    8 term: term SLASH factor •
+
+    $default  reduce using rule 8 (term)
