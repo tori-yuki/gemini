@@ -1,0 +1,21 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Books" %>
+
+<h1>Books</h1>
+
+<%= form_with url: books_path, method: :get, local: true do %>
+  <%= text_field_tag :search, params[:search], placeholder: "本を検索..." %>
+  <%= submit_tag "検索" %>
+<% end %>
+
+<div id="books">
+  <% @books.each do |book| %>
+    <%= render book %>
+    <p>
+      <%= link_to "Show this book", book %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New book", new_book_path %>

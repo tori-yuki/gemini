@@ -1,0 +1,30 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @book %>
+
+<div>
+  <%= link_to "Edit this book", edit_book_path(@book) %> |
+  <%= link_to "Back to books", books_path %>
+
+  <%= button_to "Destroy this book", @book, method: :delete %>
+</div>
+
+<h2><%= @book.title %>（<%= @book.author %>）</h2>
+<p>カテゴリ: <%= @book.category %> | メモ: <%= @book.memo %></p>
+
+<h3>レビュー一覧</h3>
+<% @reviews.each do |review| %>
+  <p><strong><%= review.user.name %></strong>: ★<%= review.rating %> <%= review.content %></p>
+<% end %>
+
+<h3>レビューを書く</h3>
+<%= form_with(model: [@book, @review]) do |f| %>
+  <%= f.label :rating %>
+  <%= f.number_field :rating, in: 1..5 %><br>
+
+  <%= f.label :content %>
+  <%= f.text_area :content %><br>
+
+  <%= f.submit "投稿" %>
+<% end %>
+
